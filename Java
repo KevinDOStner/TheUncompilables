@@ -1,2 +1,5 @@
+### The Java Bible
+https://docs.oracle.com/javase/tutorial/
+
 ### Best Youtube Tutorials for Java Fundamentals
 https://www.youtube.com/playlist?list=PLVlQHNRLflP9WTnqLr3pl1VJ5z0cVSPha
