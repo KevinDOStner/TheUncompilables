@@ -6,3 +6,6 @@ https://www.youtube.com/playlist?list=PLVlQHNRLflP9WTnqLr3pl1VJ5z0cVSPha
 
 ### Netbeans IDE (my favorite for Java development)
 https://netbeans.org/
+
+### A great Quick Reference for difficult concepts in Java
+https://www.geeksforgeeks.org/java/
