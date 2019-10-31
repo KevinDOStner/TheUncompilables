@@ -1,3 +1,15 @@
+Instead, we'll be accessing the same communal Docker instance of spark Spark through individual builds of a Docker containing Apache Zeppelin.
+
+Instructions to come...
+
+
+
+_____________________________________THE__FOLLOWING_INSTRUCTIONS__HAVE__BEEN__DEPRECATED__________________________________________
+
+
+
+
+
 Step 0) Download Docker Desktop 
 
 Step 1) Create a new file in an empty directory called Dockerfile. Add the following line at the very top:
