@@ -1,0 +1,49 @@
+Step 0) Download Docker Desktop 
+
+Step 1) Create a new file in an empty directory called Dockerfile. Add the following line at the very top:
+    FROM openjdk:8-alpine
+  
+Step 2) Build the image by running the following:
+    docker build .
+  
+Step 3) tag the image, giving it name so it’s easier to work with (replacing $MYNAME with your own name, of course). This is a slight tweak to the build command above:
+    docker build -t $MYNAME/spark:latest .
+  
+Step 4)  On a new line in the Dockerfile, add the following:
+      RUN apk --update add wget tar bash
+  
+Step 5) This should make some stuff happen, so give it a sec, but then add this line and build:
+     RUN wget "http://apache-mirror.8birdsvideo.com/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz"
+  
+  Step 6) Installation is a matter of simply extracting Spark from the archive and placing it somewhere sensible. Add another line to the Dockerfile to do this like so and then build:
+      RUN tar -xzf spark-2.4.0-bin-hadoop2.7.tgz && \ mv spark-2.4.0-bin-hadoop2.7 /spark && \ rm spark-2.4.0-bin-hadoop2.7.tgz
+  
+  Step 7) Congratulate yourself, you've now downloaded and installed Spark on a Docker image, but don't let your guard down, because we aren't done yet.
+  
+  Step 8) In your shellf, run the following command (obviously replace MYNAME with your own name if you did so earlier)
+      docker run --rm -it $MYNAME/spark:latest /bin/sh
+    
+    Step 9) You should end up in a shell inside the container, with which we use to start a Spark Master. Spark needs a couple of options when starting to startup successfully. These are the port for the Master to listen on, the port of the WebUI and the hostname of the Master:
+      /spark/bin/spark-class org.apache.spark.deploy.master.Master --ip `hostname` --port 7077 --webui-port 8070
+      
+  Step 10) Now that your Master is up and running, lets add some Workers. Do this by stopping the Master and dropping out of the container by using CTRL+C and then CTRL+D. You should now be in your local shell. This time, we will simply tweak the the docker run command to add the --name, --hostname and -p options as per below and run(remember to replace MYNAME
+       docker run --rm -it --name spark-master --hostname spark-master \ -p 7077:7077 -p 8070:8070 $MYNAME/spark:latest /bin/sh
+       
+Step 11) You can confirm that the docker image is running by using the docker ps command
+
+Step 12) You can test out running an application on Spark by running the following (it calculates the value of Pi and outputs the answer into the logs):
+     /spark/bin/spark-submit --master spark://spark-master:7077 --class \ org.apache.spark.examples.SparkPi \ /spark/examples/jars/spark-examples_2.11-2.4.0.jar 1000
+    
+
+
+
+
+Optional: 
+
+Depending what specific UI you prefer to use with Spark, you can create a docker image for that as well. I prefer Zeppelin's UI, so I would do the following:
+
+Step 1) Enter this 
+      docker run -p 8090:8090 --rm --name zeppelin apache/zeppelin:<release-version> 
+
+Apache Zeppelin's UI will now be running at http://localhost:8090/
+    
